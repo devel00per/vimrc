@@ -349,6 +349,7 @@ autocmd VimEnter * RainbowToggleOn
 
 "bracket highlight
 hi MatchParen guibg=TEAL guifg=blue gui=bold
+hi MatchParen cterm=none ctermbg=25 ctermfg=15 
 
 "delimitMate 
 let delimitMateBackspace = 2
