@@ -1,0 +1,9 @@
+*~
+.netrwhist
+.backup/
+.swp/
+.undo/
+plugged/
+autoload/
+sessions/
+
