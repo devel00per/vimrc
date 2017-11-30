@@ -277,6 +277,13 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 nmap <F8> :TagbarToggle<CR>
 nnoremap <F3> :NumbersToggle<CR>
 
+imap <silent><F2> <Esc>v`^me<Esc>gi<C-o>:call Ender()<CR>
+function Ender()
+  let endchar = nr2char(getchar())
+  execute "normal \<End>a".endchar
+  normal `e
+endfunction
+
 " <leader>t<char> mappings
 let g:tern_map_keys=1
 
@@ -287,7 +294,7 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 " *************************   //MAPPINGS   ******************************
 
 " YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion=1
+" let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_autoclose_preview_window_after_insertion=1
 
 " SuperTab, if installed
