@@ -1,9 +1,6 @@
-"source $VIMRUNTIME/vimrc_example.vim
-"source $VIMRUNTIME/mswin.vim
-"behave mswin
-
 " *********************************************************
 " SENSIBLE, explicit
+" *********************************************************
 
 if exists('g:loaded_sensible') || &compatible
   finish
@@ -97,8 +94,11 @@ endif
 inoremap <C-U> <C-G>u<C-U>
 
 " vim:set ft=vim et sw=2:
-" *****************************************************************************
 
+
+" *********************************************************
+" // SENSIBLE, explicit
+" *********************************************************
 
 " Procedure after installation, for all these plugins to work correctly:
 " 
@@ -112,9 +112,11 @@ inoremap <C-U> <C-G>u<C-U>
 " 	Requires - node and npm
 "		Installation - run 'npm install' in the tern_for_vim plugin folder
 "
+" Snippets require Python
+"
 " Project or global needs -- eslint, babel-eslint, eslint-plugin-react -- for lint to work for React
 
-if empty(glob('~/.vim/autoload/plug.vim'))
+if has('unix') && empty(glob('~/.vim/autoload/plug.vim'))
   silent execute "!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
@@ -133,14 +135,13 @@ call plug#begin()
 	Plug 'junegunn/vim-easy-align'
 	Plug 'bling/vim-airline'
 	Plug 'myusuf3/numbers.vim'
-	Plug 'jungomi/vim-mdnquery'
 	Plug 'janko-m/vim-test'
+	Plug 'wellle/targets.vim'					"new text objects like ci,
+	Plug 'michaeljsmith/vim-indent-object'		"new indent object cii for same line indent
 	" git
 	Plug 'airblade/vim-gitgutter'
-	Plug 'Xuyuanp/nerdtree-git-plugin'
+	Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 	Plug 'tpope/vim-fugitive'
-	" tagbar
-	Plug 'hushicai/tagbar-javascript.vim'
 	" ----------------------------
 	" ******* COLOR THEME
 	Plug 'flazz/vim-colorschemes'
@@ -152,11 +153,14 @@ call plug#begin()
 	Plug 'luochen1990/rainbow' " For multicolored brackets
 	Plug 'mxw/vim-jsx'
 	Plug 'othree/javascript-libraries-syntax.vim'
+	Plug 'sheerun/vim-polyglot'
 	" ----------------------------
 	" ******* COMPLETION
-	Plug 'Valloric/YouCompleteMe'
-	Plug 'marijnh/tern_for_vim'
-	Plug 'sirver/ultisnips'
+	"Plug 'Valloric/YouCompleteMe'
+	Plug 'ervandew/supertab'
+	Plug 'marijnh/tern_for_vim', { 'do': 'npm install'}
+
+	"Plug 'sirver/ultisnips'
 	Plug 'honza/vim-snippets'
 	Plug 'epilande/vim-react-snippets'
 	Plug 'mattn/emmet-vim'
@@ -166,17 +170,22 @@ call plug#begin()
 call plug#end()
 
 "Did not make the cut, but worth knowing about
-"	Plug 'jiangmiao/auto-pairs'  "bit like delimitMate
+" Plug 'jiangmiao/auto-pairs'  "bit like delimitMate
 " Plug 'tacahiroy/ctrlp-funky' " For C-styled languages
 " Plug 'scrooloose/syntastic' "Bit slow compared to ALE, maybe worth using
-"	Plug 'ervandew/supertab'  "Alternative to YCM if not possible to compile
-"	Plug 'terryma/vim-multiple-cursors'
+" Plug 'ervandew/supertab'  "Alternative to YCM if not possible to compile
+" Plug 'terryma/vim-multiple-cursors'
 " Plug 'maralla/completor.vim'  " Fallback in case YCM can't be compiled on a remote machine
-"	Plug 'reedes/vim-textobj-sentence'
-"	Plug 'reedes/vim-textobj-quote'
+" Plug 'reedes/vim-textobj-sentence'
+" Plug 'reedes/vim-textobj-quote'
 " Plug 'mhinz/vim-signify' "For when I use different vcs
 " Plug 'thaerkh/vim-workspace' " Seems worse than vim-session
 " Plug 'majutsushi/tagbar' "For C family languages
+" Plug 'hushicai/tagbar-javascript.vim' " For js with ctags
+" Plug 'jungomi/vim-mdnquery' 
+" Plug 'rhysd/clever-f.vim' "Replaces f,F,t,T with 'better' variants
+" Plug 'yuttie/comfortable-motion.vim'		"scrolling smoothly
+" Plug 'OmniSharp/omnisharp-vim' "OmniSharp
 "
 "Interesting candidates
 " vim-litecorrect - corrects common typos (teh -> the)
@@ -193,10 +202,10 @@ if has('unix')
 	set directory=~/.vim/.swp//
 	set backupdir=~/.vim/.backup//
 	set undodir=~/.vim/.undo//
-elseif has('win32')
-	set directory=~/.vim/.swp
-	set backupdir=~/.vim/.backup
-	set undodir=~/.vim/.undo
+elseif has('windows')
+	set directory=$HOME\vimfiles\_swp
+	set backupdir=$HOME\vimfiles\_backup
+	set undodir=$HOME\vimfiles\_undo
 elseif has('maxunix')
 	echo 'Meh'
 endif
@@ -262,6 +271,8 @@ autocmd FileType javascript setlocal omnifunc=tern#Complete
 
 " *************************   MAPPINGS   ******************************
 
+inoremap <F4> <C-o>A;
+
 " move up and down in screen lines rather than text lines
 nmap j gj
 nmap k gk
@@ -274,7 +285,7 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
-nmap <F8> :TagbarToggle<CR>
+"nmap <F8> :TagbarToggle<CR>
 nnoremap <F3> :NumbersToggle<CR>
 
 imap <silent><F2> <Esc>v`^me<Esc>gi<C-o>:call Ender()<CR>
@@ -299,7 +310,9 @@ let g:ycm_autoclose_preview_window_after_insertion=1
 
 " SuperTab, if installed
 let g:SuperTabClosePreviewOnPopupClose=1
-let g:SuperTabDefaultCompletionType = 'context'
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
+autocmd FileType css,scss let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 
 " CTRLP
 let g:ctrlp_working_path_mode = 'rc'
@@ -337,6 +350,20 @@ call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
 call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
 
+
+"Refresh NERDTree when entering buffers
+function! NERDTreeRefresh()
+    if &filetype == "nerdtree"
+        silent exe substitute(mapcheck("R"), "<CR>", "", "")
+    endif
+endfunction
+
+autocmd BufEnter * call NERDTreeRefresh()
+
+
+let g:NERDTreeUpdateOnCursorHold = 0
+
+
 " ALE settings
 let g:ale_lint_delay=2000
 let g:ale_lint_on_text_changed = 'never'
@@ -366,4 +393,3 @@ let delimitMate_jump_expansion = 1
 
 "vimSession
 let g:session_verbose_messages = 0
-
