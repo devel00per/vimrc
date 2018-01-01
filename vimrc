@@ -1,6 +1,7 @@
-" *********************************************************
-" SENSIBLE, explicit
-" *********************************************************
+" vim: set sw=4 ts=4 sts=4 et foldmarker={,} foldlevel=0 foldmethod=marker:
+
+
+" SENSIBLE, explicit { ********************************************************
 
 if exists('g:loaded_sensible') || &compatible
   finish
@@ -93,13 +94,11 @@ endif
 
 inoremap <C-U> <C-G>u<C-U>
 
-" vim:set ft=vim et sw=2:
+"} //SENSIBLE *****************************************************************
 
 
-" *********************************************************
-" // SENSIBLE, explicit
-" *********************************************************
-
+" Installing plugins with dependencies { **************************************
+"
 " Procedure after installation, for all these plugins to work correctly:
 " 
 " put vim-plug "plug.vim" file in the autoload folder
@@ -115,12 +114,19 @@ inoremap <C-U> <C-G>u<C-U>
 " Snippets require Python
 "
 " Project or global needs -- eslint, babel-eslint, eslint-plugin-react -- for lint to work for React
+"
+"} //Installing plugins with dependencies *************************************
 
+
+" vim-plug { ******************************************************************
 if has('unix') && empty(glob('~/.vim/autoload/plug.vim'))
   silent execute "!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
+"} //vim-plug *****************************************************************
 
+
+" Installed Plugins { *********************************************************
 call plug#begin()
 	" ******* UTILITY
 	Plug 'scrooloose/nerdtree'
@@ -172,6 +178,11 @@ call plug#begin()
 	Plug 'maksimr/vim-jsbeautify'
 call plug#end()
 
+"} //Installed Plugins ********************************************************
+
+
+" Plugins that didn't make the cut { ******************************************
+"
 "Did not make the cut, but worth knowing about
 " Plug 'jiangmiao/auto-pairs'  "bit like delimitMate
 " Plug 'tacahiroy/ctrlp-funky' " For C-styled languages
@@ -197,8 +208,12 @@ call plug#end()
 " gundo - 'graphical' undo tree
 " vim-nerdtree-tabs - for when I start using tabs more
 " editorconfig-vim - for when I need this one
+"
+"} //Plugins that didn't make the cut *****************************************
 
-" backup files
+
+" backup files { **************************************************************
+
 set backup
 set undofile
 if has('unix')
@@ -213,8 +228,11 @@ elseif has('maxunix')
 	echo 'Meh'
 endif
 
+"} //backup files *************************************************************
 
-" Look and feel
+
+" Look and feel { *************************************************************
+
 if has('gui_running')
 	set guifont=Consolas:h11:b:cANSI:qDRAFT
 	set guioptions-=m  "remove menu bar
@@ -245,6 +263,11 @@ let g:solarized_termcolors=256
 let g:solarized_contrast='high'
 colorscheme monokai-phoenix
 
+"} //Look and feel ************************************************************
+
+
+" General options { ***********************************************************
+
 set nohlsearch
 set ignorecase
 set smartcase
@@ -267,11 +290,16 @@ set colorcolumn=80
 set updatetime=1500 " in ms, this denotes how long it takes from buffer mod to writing swap file to disk
 
 set completeopt+=menuone,longest
-
-filetype plugin on " load certain plugins on a per-filetype basis
 set omnifunc=syntaxcomplete#Complete
 
-" *************************   MAPPINGS   ******************************
+filetype plugin on " load certain plugins on a per-filetype basis
+set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+hi StatusLine ctermfg=15 guifg=#ffff99 ctermbg=239 guibg=#0066cc cterm=bold gui=bold
+
+"} //General options **********************************************************
+
+
+" MAPPINGS { ******************************************************************
 
 " move up and down in screen lines rather than text lines
 nmap j gj
@@ -302,7 +330,33 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 
-" *************************   //MAPPINGS   ******************************
+inoremap ;; <C-o>A;
+
+nnoremap <A-Left> <C-W><C-H>
+nnoremap <A-Right> <C-W><C-L>
+nnoremap <A-Up> <C-W><C-K>
+nnoremap <A-Down> <C-W><C-J>
+
+vnoremap < <gv
+vnoremap > >gv
+
+onoremap iq i'
+onoremap iQ i"
+onoremap aq a'
+onoremap aQ a"
+
+onoremap ia i]
+onoremap aa a]
+
+nnoremap <expr> n  'Nn'[v:searchforward] . 'zz' "seach forward with n, backward with N, always
+nnoremap <expr> N  'nN'[v:searchforward] . 'zz'
+
+nnoremap ,h :LspHover<CR>
+
+"} //MAPPINGS *****************************************************************
+
+
+" Plugin Settings { ***********************************************************
 
 " YouCompleteMe
 " let g:ycm_autoclose_preview_window_after_completion=1
@@ -378,7 +432,6 @@ let g:ale_fixers = {
 \   'javascript.jsx': ['eslint'],
 \   'typescript': ['eslint']
 \}
-let g:ale_linters = [ 'eslint' ]
 
 let g:ale_sign_column_always = 1
 
@@ -409,67 +462,10 @@ let delimitMate_jump_expansion = 1
 "vimSession
 let g:session_verbose_messages = 0
 
-inoremap ;; <C-o>A;
-
-nnoremap <A-Left> <C-W><C-H>
-nnoremap <A-Right> <C-W><C-L>
-nnoremap <A-Up> <C-W><C-K>
-nnoremap <A-Down> <C-W><C-J>
-
-vnoremap < <gv
-vnoremap > >gv
-
-onoremap iq i'
-onoremap iQ i"
-onoremap aq a'
-onoremap aQ a"
-
-onoremap ia i]
-onoremap aa a]
-
-nnoremap <expr> n  'Nn'[v:searchforward] . 'zz' "seach forward with n, backward with N, always
-nnoremap <expr> N  'nN'[v:searchforward] . 'zz'
-
-nnoremap ,h :LspHover<CR>
-
-
-set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-hi StatusLine ctermfg=15 guifg=#ffff99 ctermbg=239 guibg=#0066cc cterm=bold gui=bold
-
-	
-if executable('typescript-language-server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'typescript-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx'],
-        \ })
-endif
-	
-let g:lsp_async_completion = 1
-
-" autocmd FileType typescript setlocal omnifunc=lsp#complete
-" autocmd FileType javascript setlocal omnifunc=lsp#complete
-" autocmd FileType javascript.jsx setlocal omnifunc=lsp#complete
-
-" let g:lsp_log_verbose = 1
-" let g:lsp_log_file = expand('~/vim-lsp.log')
-" let g:asyncomplete_log_file = expand('~/asyncomplete.log')
-
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-
-" imap <c-space> <Plug>(asyncomplete_force_refresh)
-
-
-
+"vim-rooter
 "let g:rooter_manual_only = 1   "Only trigger rooter with command
 "let g:rooter_use_lcd = 1   "Only change CWD for current windows
 let g:rooter_resolve_links = 1
 
-
-let g:EclimCompletionMethod = 'omnifunc'
-inoremap <silent><expr> ( complete_parameter#pre_complete("()")
-let g:complete_parameter_use_ultisnips_mapping = 1
+"} //Plugin Settings **********************************************************
 
