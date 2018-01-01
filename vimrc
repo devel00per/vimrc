@@ -16,7 +16,7 @@ if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
 
-set autoindent
+set nohidden
 set backspace=indent,eol,start
 set complete-=i
 set smarttab
@@ -125,15 +125,17 @@ call plug#begin()
 	" ******* UTILITY
 	Plug 'scrooloose/nerdtree'
 	Plug 'ctrlpvim/ctrlp.vim'
+	Plug 'airblade/vim-rooter'
 	Plug 'easymotion/vim-easymotion'
 	Plug 'w0rp/ale'
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-unimpaired'
 	Plug 'tpope/vim-commentary'
+	Plug 'tpope/vim-repeat'
 	Plug 'xolox/vim-misc'
 	Plug 'xolox/vim-session'
 	Plug 'junegunn/vim-easy-align'
-	Plug 'bling/vim-airline'
+	" Plug 'bling/vim-airline'
 	Plug 'myusuf3/numbers.vim'
 	Plug 'janko-m/vim-test'
 	Plug 'wellle/targets.vim'					"new text objects like ci,
@@ -149,6 +151,7 @@ call plug#begin()
 	Plug 'reewr/vim-monokai-phoenix'
 	" ----------------------------
 	" ******* SYNTAX HIGHLIGHTING
+	Plug 'sbdchd/neoformat'
 	Plug 'pangloss/vim-javascript'
 	Plug 'luochen1990/rainbow' " For multicolored brackets
 	Plug 'mxw/vim-jsx'
@@ -156,8 +159,8 @@ call plug#begin()
 	Plug 'sheerun/vim-polyglot'
 	" ----------------------------
 	" ******* COMPLETION
-	"Plug 'Valloric/YouCompleteMe'
-	Plug 'ervandew/supertab'
+	Plug 'Valloric/YouCompleteMe'
+	" Plug 'ervandew/supertab'
 	Plug 'marijnh/tern_for_vim', { 'do': 'npm install'}
 
 	"Plug 'sirver/ultisnips'
@@ -213,7 +216,7 @@ endif
 
 " Look and feel
 if has('gui_running')
-	set guifont=Consolas:h12:b:cANSI:qDRAFT
+	set guifont=Consolas:h11:b:cANSI:qDRAFT
 	set guioptions-=m  "remove menu bar
 	set guioptions-=T  "remove toolbar
 endif
@@ -253,9 +256,9 @@ set ttyfast " smoother terminal redrawing
 
 set noshowmatch " no jumping to matching bracket by default
 
-set expandtab
-set tabstop=4 " how many spaces does a tab equal
-set shiftwidth=4 " number of spaces for each indent
+" set expandtab "These are best left for ftype plugins, but leaving them just in case
+" set tabstop=4 " how many spaces does a tab equal
+" set shiftwidth=4 " number of spaces for each indent
 
 set wrap
 set textwidth=79
@@ -263,15 +266,12 @@ set formatoptions=qrn1
 set colorcolumn=80
 set updatetime=1500 " in ms, this denotes how long it takes from buffer mod to writing swap file to disk
 
-set completeopt+=menuone 
+set completeopt+=menuone,longest
 
 filetype plugin on " load certain plugins on a per-filetype basis
 set omnifunc=syntaxcomplete#Complete
-autocmd FileType javascript setlocal omnifunc=tern#Complete
 
 " *************************   MAPPINGS   ******************************
-
-inoremap <F4> <C-o>A;
 
 " move up and down in screen lines rather than text lines
 nmap j gj
@@ -306,7 +306,8 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 
 " YouCompleteMe
 " let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_autoclose_preview_window_after_insertion=1
+" let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_add_preview_to_completeopt=1
 
 " SuperTab, if installed
 let g:SuperTabClosePreviewOnPopupClose=1
@@ -365,9 +366,23 @@ let g:NERDTreeUpdateOnCursorHold = 0
 
 
 " ALE settings
+let g:ale_sign_error = '●' 
+let g:ale_sign_warning = '.'
+let g:ale_lint_on_enter = 0 
+
+
 let g:ale_lint_delay=2000
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_fixers = ['eslint']
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\   'javascript.jsx': ['eslint'],
+\   'typescript': ['eslint']
+\}
+let g:ale_linters = [ 'eslint' ]
+
+let g:ale_sign_column_always = 1
+
+autocmd FileType javascript set formatprg=prettier\ --stdin
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -393,3 +408,68 @@ let delimitMate_jump_expansion = 1
 
 "vimSession
 let g:session_verbose_messages = 0
+
+inoremap ;; <C-o>A;
+
+nnoremap <A-Left> <C-W><C-H>
+nnoremap <A-Right> <C-W><C-L>
+nnoremap <A-Up> <C-W><C-K>
+nnoremap <A-Down> <C-W><C-J>
+
+vnoremap < <gv
+vnoremap > >gv
+
+onoremap iq i'
+onoremap iQ i"
+onoremap aq a'
+onoremap aQ a"
+
+onoremap ia i]
+onoremap aa a]
+
+nnoremap <expr> n  'Nn'[v:searchforward] . 'zz' "seach forward with n, backward with N, always
+nnoremap <expr> N  'nN'[v:searchforward] . 'zz'
+
+nnoremap ,h :LspHover<CR>
+
+
+set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+hi StatusLine ctermfg=15 guifg=#ffff99 ctermbg=239 guibg=#0066cc cterm=bold gui=bold
+
+	
+if executable('typescript-language-server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'typescript-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+        \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx'],
+        \ })
+endif
+	
+let g:lsp_async_completion = 1
+
+" autocmd FileType typescript setlocal omnifunc=lsp#complete
+" autocmd FileType javascript setlocal omnifunc=lsp#complete
+" autocmd FileType javascript.jsx setlocal omnifunc=lsp#complete
+
+" let g:lsp_log_verbose = 1
+" let g:lsp_log_file = expand('~/vim-lsp.log')
+" let g:asyncomplete_log_file = expand('~/asyncomplete.log')
+
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
+" imap <c-space> <Plug>(asyncomplete_force_refresh)
+
+
+
+"let g:rooter_manual_only = 1   "Only trigger rooter with command
+"let g:rooter_use_lcd = 1   "Only change CWD for current windows
+let g:rooter_resolve_links = 1
+
+
+let g:EclimCompletionMethod = 'omnifunc'
+inoremap <silent><expr> ( complete_parameter#pre_complete("()")
+let g:complete_parameter_use_ultisnips_mapping = 1
+
