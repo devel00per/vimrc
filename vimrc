@@ -157,19 +157,20 @@ call plug#begin()
 	Plug 'reewr/vim-monokai-phoenix'
 	" ----------------------------
 	" ******* SYNTAX HIGHLIGHTING
+	" Plug 'sheerun/vim-polyglot' " Messes with JSX indentation unfortunately
+    Plug 'Yggdroot/indentLine'
 	Plug 'sbdchd/neoformat'
 	Plug 'pangloss/vim-javascript'
 	Plug 'luochen1990/rainbow' " For multicolored brackets
 	Plug 'mxw/vim-jsx'
 	Plug 'othree/javascript-libraries-syntax.vim'
-	Plug 'sheerun/vim-polyglot'
 	" ----------------------------
 	" ******* COMPLETION
 	Plug 'Valloric/YouCompleteMe'
 	" Plug 'ervandew/supertab'
 	Plug 'marijnh/tern_for_vim', { 'do': 'npm install'}
 
-	"Plug 'sirver/ultisnips'
+	Plug 'sirver/ultisnips'
 	Plug 'honza/vim-snippets'
 	Plug 'epilande/vim-react-snippets'
 	Plug 'mattn/emmet-vim'
@@ -279,9 +280,9 @@ set ttyfast " smoother terminal redrawing
 
 set noshowmatch " no jumping to matching bracket by default
 
-" set expandtab "These are best left for ftype plugins, but leaving them just in case
-" set tabstop=4 " how many spaces does a tab equal
-" set shiftwidth=4 " number of spaces for each indent
+set expandtab " Expand tabs into spaces
+set tabstop=4 " how many spaces does a tab equal
+set shiftwidth=4 " number of spaces for each indent - 4 is saner than default 8
 
 set wrap
 set textwidth=79
@@ -292,9 +293,35 @@ set updatetime=1500 " in ms, this denotes how long it takes from buffer mod to w
 set completeopt+=menuone,longest
 set omnifunc=syntaxcomplete#Complete
 
+autocmd FileType javascript.jsx set shiftwidth=2
+
 filetype plugin on " load certain plugins on a per-filetype basis
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 hi StatusLine ctermfg=15 guifg=#ffff99 ctermbg=239 guibg=#0066cc cterm=bold gui=bold
+
+set foldmethod=syntax
+set foldlevel=10
+set foldcolumn=1
+
+" function! Expander()
+"   let line   = getline(".")
+"   let col    = col(".")
+"   let first  = line[col-2]
+"   let second = line[col-1]
+"   let third  = line[col]
+
+"   if first ==# ">"
+"     if second ==# "<" && third ==# "/"
+"       return "\<CR>\<C-o>==\<C-o>O"
+"     else
+"       return "\<CR>"
+"     endif
+"   else
+"     return "\<CR>"
+"   endif
+" endfunction
+
+" inoremap <expr> <CR> Expander() "Messes with Delimitmate
 
 "} //General options **********************************************************
 
@@ -302,8 +329,8 @@ hi StatusLine ctermfg=15 guifg=#ffff99 ctermbg=239 guibg=#0066cc cterm=bold gui=
 " MAPPINGS { ******************************************************************
 
 " move up and down in screen lines rather than text lines
-nmap j gj
-nmap k gk
+" nmap j gj
+" nmap k gk
 
 " moving lines or selection with Alt+J/K
 nnoremap <A-j> :m .+1<CR>==
@@ -427,15 +454,16 @@ let g:ale_lint_on_enter = 0
 
 let g:ale_lint_delay=2000
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\   'javascript.jsx': ['eslint'],
-\   'typescript': ['eslint']
+let g:ale_fixers =  {
+\   'javascript': ['prettier'],
+\   'jsx': ['prettier'],
+\   'typescript': ['prettier']
 \}
 
 let g:ale_sign_column_always = 1
+let g:ale_javascript_prettier_use_local_config = 1
 
-autocmd FileType javascript set formatprg=prettier\ --stdin
+autocmd FileType javascript.jsx set formatprg=node_modules/prettier/bin/prettier\ --stdin
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -444,6 +472,15 @@ nmap ga <Plug>(EasyAlign)
 
 "jsx
 let g:jsx_ext_required = 0
+
+"emmet
+let g:user_emmet_settings = {
+\  'javascript.jsx' : {
+\      'extends' : 'jsx',
+\  }
+\}
+
+
 
 "Rainbow brackets
 let g:rainbow_active = 1
@@ -454,7 +491,6 @@ hi MatchParen guibg=TEAL guifg=blue gui=bold
 hi MatchParen cterm=none ctermbg=25 ctermfg=15 
 
 "delimitMate 
-let delimitMateBackspace = 2
 let delimitMate_expand_cr = 2
 let delimitMate_expand_space = 1
 let delimitMate_jump_expansion = 1
