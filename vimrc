@@ -152,17 +152,18 @@ call plug#begin()
 	Plug 'tpope/vim-fugitive'
 	" ----------------------------
 	" ******* COLOR THEME
-	Plug 'flazz/vim-colorschemes'
-	Plug 'altercation/vim-colors-solarized'
+	" Plug 'flazz/vim-colorschemes'
+	" Plug 'altercation/vim-colors-solarized'
 	Plug 'reewr/vim-monokai-phoenix'
 	" ----------------------------
 	" ******* SYNTAX HIGHLIGHTING
 	" Plug 'sheerun/vim-polyglot' " Messes with JSX indentation unfortunately
     Plug 'Yggdroot/indentLine'
-	Plug 'sbdchd/neoformat'
+	" Plug 'sbdchd/neoformat'
 	Plug 'pangloss/vim-javascript'
 	Plug 'luochen1990/rainbow' " For multicolored brackets
 	Plug 'mxw/vim-jsx'
+    Plug 'elzr/vim-json'
 	Plug 'othree/javascript-libraries-syntax.vim'
 	" ----------------------------
 	" ******* COMPLETION
@@ -250,7 +251,6 @@ if !has("gui_running")
 		nnoremap <Char-0x07F> <BS>
 	endif
 	set t_Co=256
-	colorscheme monokai-phoenix
 	set mouse=a
 	set nocompatible
 	"let &t_kb = nr2char(127)
@@ -260,9 +260,10 @@ endif
 au GUIEnter * simalt ~x " maximize on start
 
 set background=dark
-let g:solarized_termcolors=256
-let g:solarized_contrast='high'
+" let g:solarized_termcolors=256
+" let g:solarized_contrast='normal'
 colorscheme monokai-phoenix
+" colorscheme solarized
 
 "} //Look and feel ************************************************************
 
@@ -299,7 +300,7 @@ filetype plugin on " load certain plugins on a per-filetype basis
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 hi StatusLine ctermfg=15 guifg=#ffff99 ctermbg=239 guibg=#0066cc cterm=bold gui=bold
 
-set foldmethod=syntax
+set foldmethod=indent
 set foldlevel=10
 set foldcolumn=1
 
@@ -389,6 +390,10 @@ nnoremap ,h :LspHover<CR>
 " let g:ycm_autoclose_preview_window_after_completion=1
 " let g:ycm_autoclose_preview_window_after_insertion=1
 let g:ycm_add_preview_to_completeopt=1
+let g:ycm_show_diagnostics_ui=0
+
+"A hack to make TS completion work in jsx
+autocmd FileType javascript.jsx set ft=typescript syntax=javascript.jsx
 
 " SuperTab, if installed
 let g:SuperTabClosePreviewOnPopupClose=1
@@ -455,16 +460,17 @@ let g:ale_lint_on_enter = 0
 let g:ale_lint_delay=2000
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_fixers =  {
-\   'javascript': ['prettier'],
-\   'jsx': ['prettier'],
-\   'typescript': ['prettier']
+\   'javascript': ['eslint'],
+\   'jsx': ['eslint'],
+\   'typescript': ['eslint']
 \}
 
 let g:ale_sign_column_always = 1
-let g:ale_javascript_prettier_use_local_config = 1
+" no need for these anymore cause eslintrc takes care of it with
+" eslint-plugin-prettier
+" let g:ale_javascript_prettier_options = '--single-quote --arrow-parens always'
 
-autocmd FileType javascript.jsx set formatprg=node_modules/prettier/bin/prettier\ --stdin
-
+"EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -503,5 +509,9 @@ let g:session_verbose_messages = 0
 "let g:rooter_use_lcd = 1   "Only change CWD for current windows
 let g:rooter_resolve_links = 1
 
-"} //Plugin Settings **********************************************************
+"vim-json
+let g:vim_json_syntax_conceal = 0
 
+"indentLine
+let g:indentLine_noConcealCursor=""
+"} //Plugin Settings **********************************************************
