@@ -141,6 +141,7 @@ call plug#begin()
 	Plug 'xolox/vim-misc'
 	Plug 'xolox/vim-session'
 	Plug 'junegunn/vim-easy-align'
+    Plug 'chrisbra/nrrwrgn'
 	" Plug 'bling/vim-airline'
 	Plug 'myusuf3/numbers.vim'
 	Plug 'janko-m/vim-test'
@@ -162,9 +163,11 @@ call plug#begin()
 	" Plug 'sbdchd/neoformat'
 	Plug 'pangloss/vim-javascript'
 	Plug 'luochen1990/rainbow' " For multicolored brackets
-	Plug 'mxw/vim-jsx'
+	" Plug 'mxw/vim-jsx'
+    Plug 'neoclide/vim-jsx-improve'
     Plug 'elzr/vim-json'
 	Plug 'othree/javascript-libraries-syntax.vim'
+    Plug 'leafgarland/typescript-vim'
 	" ----------------------------
 	" ******* COMPLETION
 	Plug 'Valloric/YouCompleteMe'
@@ -497,9 +500,9 @@ hi MatchParen guibg=TEAL guifg=blue gui=bold
 hi MatchParen cterm=none ctermbg=25 ctermfg=15 
 
 "delimitMate 
-let delimitMate_expand_cr = 2
+let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
-let delimitMate_jump_expansion = 1
+let delimitMate_jump_expansion = 0
 
 "vimSession
 let g:session_verbose_messages = 0
