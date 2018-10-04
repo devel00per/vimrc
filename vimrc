@@ -129,28 +129,30 @@ endif
 " Installed Plugins { *********************************************************
 call plug#begin()
 	" ******* UTILITY
+    Plug 'editorconfig/editorconfig-vim'
 	Plug 'scrooloose/nerdtree'
 	Plug 'ctrlpvim/ctrlp.vim'
 	Plug 'airblade/vim-rooter'
 	Plug 'easymotion/vim-easymotion'
 	Plug 'w0rp/ale'
 	Plug 'tpope/vim-surround'
-	Plug 'tpope/vim-unimpaired'
+	Plug 'tpope/vim-unimpaired'                 "]e [e move line up/down and similar, really extensive, check doc
 	Plug 'tpope/vim-commentary'
 	Plug 'tpope/vim-repeat'
 	Plug 'xolox/vim-misc'
 	Plug 'xolox/vim-session'
-	Plug 'junegunn/vim-easy-align'
+	Plug 'junegunn/vim-easy-align'              "Aligns stuff nicely, rarely used though
     Plug 'chrisbra/nrrwrgn'
 	" Plug 'bling/vim-airline'
-	Plug 'myusuf3/numbers.vim'
-	Plug 'janko-m/vim-test'
+	Plug 'myusuf3/numbers.vim'                  "Toggle between relative/absolute
+	" Plug 'janko-m/vim-test'                   "Runs test suites
 	Plug 'wellle/targets.vim'					"new text objects like ci,
 	Plug 'michaeljsmith/vim-indent-object'		"new indent object cii for same line indent
 	" git
-	Plug 'airblade/vim-gitgutter'
+	Plug 'airblade/vim-gitgutter'               "]c [c for hunks
 	Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
-	Plug 'tpope/vim-fugitive'
+	Plug 'tpope/vim-fugitive'                   "Git wrapper
+    Plug 'tpope/vim-rhubarb'                    "Supports fugitive
 	" ----------------------------
 	" ******* COLOR THEME
 	" Plug 'flazz/vim-colorschemes'
@@ -159,7 +161,7 @@ call plug#begin()
 	" ----------------------------
 	" ******* SYNTAX HIGHLIGHTING
 	" Plug 'sheerun/vim-polyglot' " Messes with JSX indentation unfortunately
-    Plug 'Yggdroot/indentLine'
+    Plug 'Yggdroot/indentLine'                  "Displays indent lines
 	" Plug 'sbdchd/neoformat'
 	Plug 'pangloss/vim-javascript'
 	Plug 'luochen1990/rainbow' " For multicolored brackets
@@ -170,9 +172,8 @@ call plug#begin()
     Plug 'leafgarland/typescript-vim'
 	" ----------------------------
 	" ******* COMPLETION
-	Plug 'Valloric/YouCompleteMe'
-	" Plug 'ervandew/supertab'
-	Plug 'marijnh/tern_for_vim', { 'do': 'npm install'}
+    Plug 'Valloric/YouCompleteMe'
+    " Plug 'autozimu/LanguageClient-neovim'
 
 	Plug 'sirver/ultisnips'
 	Plug 'honza/vim-snippets'
@@ -180,7 +181,7 @@ call plug#begin()
 	Plug 'mattn/emmet-vim'
 	Plug 'raimondi/delimitmate'
 	Plug 'othree/html5.vim'
-	Plug 'maksimr/vim-jsbeautify'
+	" Plug 'maksimr/vim-jsbeautify'
 call plug#end()
 
 "} //Installed Plugins ********************************************************
@@ -194,7 +195,7 @@ call plug#end()
 " Plug 'scrooloose/syntastic' "Bit slow compared to ALE, maybe worth using
 " Plug 'ervandew/supertab'  "Alternative to YCM if not possible to compile
 " Plug 'terryma/vim-multiple-cursors'
-" Plug 'maralla/completor.vim'  " Fallback in case YCM can't be compiled on a remote machine
+" Plug 'maralla/completor.vim'  " Fallback 
 " Plug 'reedes/vim-textobj-sentence'
 " Plug 'reedes/vim-textobj-quote'
 " Plug 'mhinz/vim-signify' "For when I use different vcs
@@ -214,6 +215,14 @@ call plug#end()
 " vim-nerdtree-tabs - for when I start using tabs more
 " editorconfig-vim - for when I need this one
 "
+" Plug 'Valloric/YouCompleteMe'
+" " Plug 'ervandew/supertab'
+" Plug 'marijnh/tern_for_vim', { 'do': 'npm install'}
+"
+"
+" Plug 'neoclide/coc.nvim' "Worse than LanguageClient-neovim it seems
+" Plug 'prabirshrestha/async.vim' "Weird bug with clangd
+" Plug 'prabirshrestha/vim-lsp'
 "} //Plugins that didn't make the cut *****************************************
 
 
@@ -281,6 +290,7 @@ set smartindent
 set visualbell
 set cursorline
 set ttyfast " smoother terminal redrawing
+" set clipboard=unnamedplus
 
 set noshowmatch " no jumping to matching bracket by default
 
@@ -388,29 +398,14 @@ nnoremap ,h :LspHover<CR>
 
 
 " Plugin Settings { ***********************************************************
-
-" YouCompleteMe
-" let g:ycm_autoclose_preview_window_after_completion=1
-" let g:ycm_autoclose_preview_window_after_insertion=1
-let g:ycm_add_preview_to_completeopt=1
-let g:ycm_show_diagnostics_ui=0
+let g:EditorConfig_exclude_patterns = ['fugitive://.*'] "Make it work with fugitive
 
 "A hack to make TS completion work in jsx
-autocmd FileType javascript.jsx set ft=typescript syntax=javascript.jsx
-
-" SuperTab, if installed
-let g:SuperTabClosePreviewOnPopupClose=1
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-autocmd FileType css,scss let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+" autocmd FileType javascript.jsx set ft=typescript syntax=javascript.jsx
 
 " CTRLP
 let g:ctrlp_working_path_mode = 'rc'
 let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
-
-" Signify
-let g:signify_realtime = 1
-let g:signify_vcs_list = [ 'git' ]
 
 "Easymotion
 map <space> <Plug>(easymotion-prefix)
@@ -440,7 +435,6 @@ call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
 call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
 
-
 "Refresh NERDTree when entering buffers
 function! NERDTreeRefresh()
     if &filetype == "nerdtree"
@@ -450,18 +444,15 @@ endfunction
 
 autocmd BufEnter * call NERDTreeRefresh()
 
-
 let g:NERDTreeUpdateOnCursorHold = 0
-
 
 " ALE settings
 let g:ale_sign_error = '●' 
 let g:ale_sign_warning = '.'
-let g:ale_lint_on_enter = 0 
-
 
 let g:ale_lint_delay=2000
-let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_text_changed = 'never' "Only lint on save
+let g:ale_lint_on_enter = 0  "Only lint on save
 let g:ale_fixers =  {
 \   'javascript': ['eslint'],
 \   'jsx': ['eslint'],
@@ -517,4 +508,5 @@ let g:vim_json_syntax_conceal = 0
 
 "indentLine
 let g:indentLine_noConcealCursor=""
+
 "} //Plugin Settings **********************************************************
