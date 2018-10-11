@@ -143,9 +143,7 @@ call plug#begin()
 	Plug 'xolox/vim-session'
 	Plug 'junegunn/vim-easy-align'              "Aligns stuff nicely, rarely used though
     Plug 'chrisbra/nrrwrgn'
-	" Plug 'bling/vim-airline'
 	Plug 'myusuf3/numbers.vim'                  "Toggle between relative/absolute
-	" Plug 'janko-m/vim-test'                   "Runs test suites
 	Plug 'wellle/targets.vim'					"new text objects like ci,
 	Plug 'michaeljsmith/vim-indent-object'		"new indent object cii for same line indent
 	" git
@@ -155,17 +153,12 @@ call plug#begin()
     Plug 'tpope/vim-rhubarb'                    "Supports fugitive
 	" ----------------------------
 	" ******* COLOR THEME
-	" Plug 'flazz/vim-colorschemes'
-	" Plug 'altercation/vim-colors-solarized'
 	Plug 'reewr/vim-monokai-phoenix'
 	" ----------------------------
 	" ******* SYNTAX HIGHLIGHTING
-	" Plug 'sheerun/vim-polyglot' " Messes with JSX indentation unfortunately
     Plug 'Yggdroot/indentLine'                  "Displays indent lines
-	" Plug 'sbdchd/neoformat'
 	Plug 'pangloss/vim-javascript'
 	Plug 'luochen1990/rainbow' " For multicolored brackets
-	" Plug 'mxw/vim-jsx'
     Plug 'neoclide/vim-jsx-improve'
     Plug 'elzr/vim-json'
 	Plug 'othree/javascript-libraries-syntax.vim'
@@ -173,58 +166,15 @@ call plug#begin()
 	" ----------------------------
 	" ******* COMPLETION
     Plug 'Valloric/YouCompleteMe'
-    " Plug 'autozimu/LanguageClient-neovim'
-
 	Plug 'sirver/ultisnips'
 	Plug 'honza/vim-snippets'
 	Plug 'epilande/vim-react-snippets'
 	Plug 'mattn/emmet-vim'
 	Plug 'raimondi/delimitmate'
 	Plug 'othree/html5.vim'
-	" Plug 'maksimr/vim-jsbeautify'
 call plug#end()
 
 "} //Installed Plugins ********************************************************
-
-
-" Plugins that didn't make the cut { ******************************************
-"
-"Did not make the cut, but worth knowing about
-" Plug 'jiangmiao/auto-pairs'  "bit like delimitMate
-" Plug 'tacahiroy/ctrlp-funky' " For C-styled languages
-" Plug 'scrooloose/syntastic' "Bit slow compared to ALE, maybe worth using
-" Plug 'ervandew/supertab'  "Alternative to YCM if not possible to compile
-" Plug 'terryma/vim-multiple-cursors'
-" Plug 'maralla/completor.vim'  " Fallback 
-" Plug 'reedes/vim-textobj-sentence'
-" Plug 'reedes/vim-textobj-quote'
-" Plug 'mhinz/vim-signify' "For when I use different vcs
-" Plug 'thaerkh/vim-workspace' " Seems worse than vim-session
-" Plug 'majutsushi/tagbar' "For C family languages
-" Plug 'hushicai/tagbar-javascript.vim' " For js with ctags
-" Plug 'jungomi/vim-mdnquery' 
-" Plug 'rhysd/clever-f.vim' "Replaces f,F,t,T with 'better' variants
-" Plug 'yuttie/comfortable-motion.vim'		"scrolling smoothly
-" Plug 'OmniSharp/omnisharp-vim' "OmniSharp
-"
-"Interesting candidates
-" vim-litecorrect - corrects common typos (teh -> the)
-" vim-over - highlights :substitute pattern
-" vim-easy-align - align text in various ways
-" gundo - 'graphical' undo tree
-" vim-nerdtree-tabs - for when I start using tabs more
-" editorconfig-vim - for when I need this one
-"
-" Plug 'Valloric/YouCompleteMe'
-" " Plug 'ervandew/supertab'
-" Plug 'marijnh/tern_for_vim', { 'do': 'npm install'}
-"
-"
-" Plug 'neoclide/coc.nvim' "Worse than LanguageClient-neovim it seems
-" Plug 'prabirshrestha/async.vim' "Weird bug with clangd
-" Plug 'prabirshrestha/vim-lsp'
-"} //Plugins that didn't make the cut *****************************************
-
 
 " backup files { **************************************************************
 
@@ -272,10 +222,7 @@ endif
 au GUIEnter * simalt ~x " maximize on start
 
 set background=dark
-" let g:solarized_termcolors=256
-" let g:solarized_contrast='normal'
 colorscheme monokai-phoenix
-" colorscheme solarized
 
 "} //Look and feel ************************************************************
 
@@ -290,7 +237,6 @@ set smartindent
 set visualbell
 set cursorline
 set ttyfast " smoother terminal redrawing
-" set clipboard=unnamedplus
 
 set noshowmatch " no jumping to matching bracket by default
 
@@ -317,34 +263,10 @@ set foldmethod=indent
 set foldlevel=10
 set foldcolumn=1
 
-" function! Expander()
-"   let line   = getline(".")
-"   let col    = col(".")
-"   let first  = line[col-2]
-"   let second = line[col-1]
-"   let third  = line[col]
-
-"   if first ==# ">"
-"     if second ==# "<" && third ==# "/"
-"       return "\<CR>\<C-o>==\<C-o>O"
-"     else
-"       return "\<CR>"
-"     endif
-"   else
-"     return "\<CR>"
-"   endif
-" endfunction
-
-" inoremap <expr> <CR> Expander() "Messes with Delimitmate
-
 "} //General options **********************************************************
 
 
 " MAPPINGS { ******************************************************************
-
-" move up and down in screen lines rather than text lines
-" nmap j gj
-" nmap k gk
 
 " moving lines or selection with Alt+J/K
 nnoremap <A-j> :m .+1<CR>==
@@ -399,9 +321,6 @@ nnoremap ,h :LspHover<CR>
 
 " Plugin Settings { ***********************************************************
 let g:EditorConfig_exclude_patterns = ['fugitive://.*'] "Make it work with fugitive
-
-"A hack to make TS completion work in jsx
-" autocmd FileType javascript.jsx set ft=typescript syntax=javascript.jsx
 
 " CTRLP
 let g:ctrlp_working_path_mode = 'rc'
@@ -460,9 +379,6 @@ let g:ale_fixers =  {
 \}
 
 let g:ale_sign_column_always = 1
-" no need for these anymore cause eslintrc takes care of it with
-" eslint-plugin-prettier
-" let g:ale_javascript_prettier_options = '--single-quote --arrow-parens always'
 
 "EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga)

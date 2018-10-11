@@ -1,0 +1,56 @@
+" LanguageClient-neovim
+" let g:LanguageClient_serverCommands = {
+"     \ 'typescript': ['typescript-language-server'],
+"     \ 'javascript': ['javascript-typescript-stdio'],
+"     \ 'javascript.jsx': ['javascript-typescript-stdio'],
+"     \ 'cpp': ['clangd']
+"     \ }
+
+" let g:LanguageClient_changeThrottle = 0.5 " Time to delay sending info to server after text change
+" let g:LanguageClient_hoverPreview = 'Always'
+"
+" let g:LanguageClient_loggingFile = '/home/daniel/LangClientLog.txt'
+" let g:LanguageClient_loggingLevel = 'DEBUG'
+" Vim-LSP and stuff { *********************************************************
+" vim-lsp
+" if executable('typescript-language-server')
+"     au User lsp_setup call lsp#register_server({
+"       \ 'name': 'typescript-language-server',
+"       \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+"       \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+"       \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
+"       \ })
+" endif
+
+" if executable('clangd')
+"     au User lsp_setup call lsp#register_server({
+"         \ 'name': 'clangd',
+"         \ 'cmd': {server_info->['clangd']},
+"         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+"         \ })
+" endif
+
+" autocmd FileType typescript setlocal omnifunc=lsp#complete
+" autocmd FileType javascript setlocal omnifunc=lsp#complete
+" autocmd FileType javascript.jsx setlocal omnifunc=lsp#complete
+" autocmd FileType cpp setlocal omnifunc=lsp#complete
+" autocmd FileType c setlocal omnifunc=lsp#complete
+
+" let g:asyncomplete_smart_completion=1
+" let g:asyncomplete_remove_duplicates=1
+" } ***************************************************************************
+
+" YouCompleteMe
+" let g:ycm_autoclose_preview_window_after_completion=1
+" let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_add_preview_to_completeopt=1
+let g:ycm_show_diagnostics_ui=0
+    " Plug 'prabirshrestha/async.vim'
+    " Plug 'prabirshrestha/vim-lsp'
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': 'bash install.sh',
+        \ }
+    " Plug 'ervandew/supertab'  "Alternative to YCM if not possible to compile
+    " Plug 'prabirshrestha/asyncomplete.vim'
+    " Plug 'prabirshrestha/asyncomplete-lsp.vim'

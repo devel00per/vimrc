@@ -1,0 +1,61 @@
+" Plugins that didn't make the cut { ******************************************
+"
+"Did not make the cut, but worth knowing about
+" Plug 'jiangmiao/auto-pairs'  "bit like delimitMate
+" Plug 'mxw/vim-jsx'
+" Plug 'flazz/vim-colorschemes'
+" Plug 'sbdchd/neoformat'
+" Plug 'altercation/vim-colors-solarized'
+" Plug 'sheerun/vim-polyglot' " Messes with JSX indentation unfortunately
+" Plug 'janko-m/vim-test'                   "Runs test suites
+" Plug 'autozimu/LanguageClient-neovim'
+" Plug 'bling/vim-airline'
+" Plug 'tacahiroy/ctrlp-funky' " For C-styled languages
+" Plug 'scrooloose/syntastic' "Bit slow compared to ALE, maybe worth using
+" Plug 'ervandew/supertab'  "Alternative to YCM if not possible to compile
+" Plug 'terryma/vim-multiple-cursors'
+" Plug 'maralla/completor.vim'  " Fallback 
+" Plug 'reedes/vim-textobj-sentence'
+" Plug 'reedes/vim-textobj-quote'
+" Plug 'mhinz/vim-signify' "For when I use different vcs
+" Plug 'thaerkh/vim-workspace' " Seems worse than vim-session
+" Plug 'majutsushi/tagbar' "For C family languages
+" Plug 'hushicai/tagbar-javascript.vim' " For js with ctags
+" Plug 'jungomi/vim-mdnquery' 
+" Plug 'rhysd/clever-f.vim' "Replaces f,F,t,T with 'better' variants
+" Plug 'yuttie/comfortable-motion.vim'		"scrolling smoothly
+" Plug 'OmniSharp/omnisharp-vim' "OmniSharp
+" Plug 'maksimr/vim-jsbeautify'
+"
+"Interesting candidates
+" vim-litecorrect - corrects common typos (teh -> the)
+" vim-over - highlights :substitute pattern
+" vim-easy-align - align text in various ways
+" gundo - 'graphical' undo tree
+" vim-nerdtree-tabs - for when I start using tabs more
+" editorconfig-vim - for when I need this one
+"
+" Plug 'Valloric/YouCompleteMe'
+" " Plug 'ervandew/supertab'
+" Plug 'marijnh/tern_for_vim', { 'do': 'npm install'}
+"
+"
+" Plug 'neoclide/coc.nvim' "Worse than LanguageClient-neovim it seems
+" Plug 'prabirshrestha/async.vim' "Weird bug with clangd
+" Plug 'prabirshrestha/vim-lsp'
+"} //Plugins that didn't make the cut *****************************************
+
+
+
+" let g:solarized_termcolors=256
+" let g:solarized_contrast='normal'
+" colorscheme solarized
+
+
+" move up and down in screen lines rather than text lines
+" nmap j gj
+" nmap k gk
+
+
+"A hack to make TS completion work in jsx
+" autocmd FileType javascript.jsx set ft=typescript syntax=javascript.jsx
